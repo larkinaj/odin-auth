@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
@@ -6,7 +7,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const mongoDb = "mongodb+srv://test-user:Tassword123@cluster0.0yh68ze.mongodb.net/?retryWrites=true&w=majority";
+
+const mongoDb = process.env.MONGO_URI;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
@@ -59,7 +61,6 @@ app.use(function(req, res, next) {
 
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 app.post("/sign-up", (req, res, next) => {
-  console.log(req.body)
   const user = new User({
     username: req.body.username,
     password: req.body.password
